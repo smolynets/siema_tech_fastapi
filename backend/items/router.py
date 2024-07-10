@@ -33,7 +33,6 @@ async def upload_csv(db: AsyncSession = Depends(get_db_session), file: UploadFil
                 "Family",
                 "Price"
             ]}
-            await product_crud.create_sales(sales, product.id)
             await product_crud.create_product(
                 db,
                 id=product["Product ID"],
@@ -41,6 +40,7 @@ async def upload_csv(db: AsyncSession = Depends(get_db_session), file: UploadFil
                 price=product["Price"],
                 family_name=product["Family"]
             )
+            await product_crud.create_sales(db, sales, product["Product ID"])
     return {"message": "Products uploaded successfully"}
 
 
