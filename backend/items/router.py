@@ -63,6 +63,16 @@ async def get_all_families(
     return  await product_crud.get_families(db, skip, limit)
 
 
+@router.get("/sales/")
+# @router.get("/families/", response_model=list[FamilySchema])
+async def get_all_sales(
+    db: AsyncSession = Depends(get_db_session),
+    skip: int = 0,
+    limit: int = 10,
+):
+    return  await product_crud.get_sales(db, skip, limit)
+
+
 
 # @router.post("/", summary="Items", response_model=ItemOutSchema)
 # async def create_item_api(

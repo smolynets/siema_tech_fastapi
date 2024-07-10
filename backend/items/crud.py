@@ -46,7 +46,7 @@ class ProductCrud():
         for month, count in sales.items():
             sale = await self.get_sale_by_product(db, month, product_id)
             if sale is None:
-                db_sale = Sale(month=month, product_id=product_id)
+                db_sale = Sale(month=month, product_id=product_id, count=count)
                 db.add(db_sale)
                 await db.commit()
                 await db.refresh(db_sale)

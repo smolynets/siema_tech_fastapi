@@ -1,8 +1,8 @@
 """add family and sale models
 
-Revision ID: f4d40c42131b
+Revision ID: 0773db2a40bf
 Revises: 8d26b15035f7
-Create Date: 2024-07-10 18:39:36.686138
+Create Date: 2024-07-10 20:35:46.439170
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'f4d40c42131b'
+revision: str = '0773db2a40bf'
 down_revision: Union[str, None] = '8d26b15035f7'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -28,7 +28,7 @@ def upgrade() -> None:
     op.create_table('sales',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('month', sa.String(), nullable=True),
-    sa.Column('count', sa.String(), nullable=True),
+    sa.Column('count', sa.Integer(), nullable=True),
     sa.Column('product_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
     sa.PrimaryKeyConstraint('id')

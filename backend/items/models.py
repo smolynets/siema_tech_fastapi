@@ -36,6 +36,6 @@ class Sale(Base):
 
     id = Column(Integer, primary_key=True)
     month = Column(String)
-    count = Column(String)
+    count = Column(Integer)
     product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
     product = relationship("Product")
