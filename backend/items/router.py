@@ -122,3 +122,36 @@ async def get_all_sales(
 #     if not db_item:
 #         raise HTTPException(status_code=404, detail="Item not found")
 #     return db_item
+
+
+@router.delete("/delete_sale/{id}")
+async def delete_sale(
+    id: int,
+    session: AsyncSession = Depends(get_db_session),
+):
+    db_item = await product_crud.delete_sale(session, id)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Sale not found")
+    return db_item
+
+
+@router.delete("/delete_product/{id}")
+async def delete_sale(
+    id: int,
+    session: AsyncSession = Depends(get_db_session),
+):
+    db_item = await product_crud.delete_product(session, id)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return db_item
+
+
+@router.delete("/delete_family/{id}")
+async def delete_sale(
+    id: int,
+    session: AsyncSession = Depends(get_db_session),
+):
+    db_item = await product_crud.delete_family(session, id)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Family not found")
+    return db_item

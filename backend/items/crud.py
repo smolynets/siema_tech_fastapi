@@ -14,7 +14,12 @@ logger = logging.getLogger(f"{SERVICE_NAME}_logger")
 
 class ProductCrud():
 
-    async def get_family(self, db: AsyncSession, family_name: str):
+    async def get_family(self, db: AsyncSession, id: int):
+        result = await db.execute(select(Family).where(Family.id == id))
+        return result.scalars().first()
+
+
+    async def get_family_by_name(self, db: AsyncSession, family_name: str):
         result = await db.execute(select(Family).where(Family.name == family_name))
         return result.scalars().first()
     
@@ -37,6 +42,11 @@ class ProductCrud():
         return result.scalars().first()
 
 
+    async def get_sale_by_id(self, db: AsyncSession, id: int):
+        result = await db.execute(select(Sale).where(Sale.id == id))
+        return result.scalars().first()
+
+
     async def get_sales(self, db: AsyncSession, skip: int = 0, limit: int = 10):
         result = await db.execute(select(Sale).offset(skip).limit(limit))
         return result.scalars().all()
@@ -55,7 +65,7 @@ class ProductCrud():
 
 
     async def create_product(self, db: AsyncSession, id: int, name: str, price: int, family_name: str):
-        family = await self.get_family(db, family_name)
+        family = await self.get_family_by_name(db, family_name)
         if family is None:
             family = await self.create_family(db, family_name)
         db_product = Product(id=id, name=name, price=price, family_id=family.id)
@@ -87,6 +97,30 @@ class ProductCrud():
 
     async def delete_item(self, db: AsyncSession, item_id: int):
         db_item = await get_item(db, item_id)
+        if db_item:
+            await db.delete(db_item)
+            await db.commit()
+        return db_item
+
+
+    async def delete_sale(self, db: AsyncSession, id: int):
+        db_item = await self.get_sale_by_id(db, id)
+        if db_item:
+            await db.delete(db_item)
+            await db.commit()
+        return db_item
+
+
+    async def delete_product(self, db: AsyncSession, id: int):
+        db_item = await self.get_product(db, id)
+        if db_item:
+            await db.delete(db_item)
+            await db.commit()
+        return db_item
+
+
+    async def delete_family(self, db: AsyncSession, id: int):
+        db_item = await self.get_family(db, id)
         if db_item:
             await db.delete(db_item)
             await db.commit()
