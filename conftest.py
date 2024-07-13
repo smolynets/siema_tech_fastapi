@@ -7,6 +7,11 @@ from backend.database import Base, get_db, SessionLocal
 from backend import config
 from fastapi.testclient import TestClient
 from backend import config
+from backend.items.models import Product, Family, Sale
+from backend.items.crud import ProductCrud
+
+
+product_crud = ProductCrud()
 
 # Update the URL to match your Docker Compose setup
 SQLALCHEMY_DATABASE_URL = f"postgresql+psycopg2://{config.TEST_POSTGRES_USER}:{config.TEST_POSTGRES_PASSWORD}@{config.TEST_POSTGRES_HOST}:\
@@ -60,3 +65,13 @@ def test_client(db_session):
     app.dependency_overrides[get_db] = override_get_db
     with TestClient(app) as test_client:
         yield test_client
+
+
+@pytest.fixture
+def create_families(db_session):
+    def _create_families(count):
+        assert db_session.query(Family).count() == 0
+        for i in range(count):
+            product_crud.create_family(db_session, f"Test Product {i+1}")
+        assert db_session.query(Family).count() == count
+    return _create_families

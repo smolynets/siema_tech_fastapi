@@ -19,6 +19,21 @@ class FamilyCreate(BaseModel):
         orm_mode = True
 
 
+class FamilyOutSchema(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
+class FamilyUpdate(BaseModel):
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
 class ItemOutSchema(BaseModel):
     id: int
     name: str

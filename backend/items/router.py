@@ -1,7 +1,9 @@
 import logging
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from backend.database import get_db
-from backend.items.schemas import ProductCreate, ItemOutSchema, ItemUpdate, ProductSchema, FamilySchema
+from backend.items.schemas import (
+    ProductCreate, ItemOutSchema, ItemUpdate, ProductSchema, FamilySchema, FamilyUpdate, FamilyOutSchema
+)
 from backend.items.models import Item, Product
 from backend.items.crud import ProductCrud
 from typing import List
@@ -57,6 +59,18 @@ def get_all_families(
 ):
     return product_crud.get_families(db, skip, limit)
 
+
+@router.get("/family/{id}")
+def get_family_by_id(
+    id: int,
+    db: Session = Depends(get_db)
+):  
+    db_item = product_crud.get_family(db, id)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Family not found")
+    return product_crud.get_family(db, id)
+
+
 @router.get("/sales/")
 def get_all_sales(
     db: Session = Depends(get_db),
@@ -64,6 +78,19 @@ def get_all_sales(
     limit: int = 10,
 ):
     return product_crud.get_sales(db, skip, limit)
+
+
+@router.put("/family/{id}", response_model=FamilyOutSchema)
+def update_family_api(
+    id: int,
+    family: FamilyUpdate,
+    db: Session = Depends(get_db)
+):
+    db_item = product_crud.update_family(db, id, family)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Family not found")
+    return db_item
+
 
 @router.delete("/delete_sale/{id}")
 def delete_sale(
