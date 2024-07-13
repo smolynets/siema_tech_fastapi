@@ -242,3 +242,16 @@ def test_upload_csv(test_client, db_session):
     sale = db_session.query(Sale).filter_by(product_id=1111).first()
     assert sale.month == "2024-01"
     assert sale.count == 23
+
+
+@pytest.mark.parametrize("filename,content_type,expected_status_code", [
+    ("test.txt", "text/plain", 400),
+    ("test.csv", "application/octet-stream", 400)
+])
+def test_upload_invalid_files(test_client, filename, content_type, expected_status_code):
+    file = io.BytesIO(b"Product ID,Product Name,Family,Price,January,February,March\n1,Test Product,Test Family,10.0,5,3,8")
+    file.name = filename
+    files = {'file': (filename, file, content_type)}
+    response = test_client.post("/api/v1/items/upload-csv/", files=files)
+    assert response.status_code == expected_status_code
+    assert response.json()["detail"][0]["msg"] == "Invalid file type. Only CSV files are allowed."

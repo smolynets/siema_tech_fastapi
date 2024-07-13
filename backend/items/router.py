@@ -29,6 +29,10 @@ logger = logging.getLogger("SERVICE_NAME_logger")  # Adjust SERVICE_NAME as need
 
 @router.post("/upload-csv/")
 def upload_csv(db: Session = Depends(get_db), file: UploadFile = File(...)):
+    if not file.filename.endswith('.csv'):
+        raise HTTPException(status_code=400, detail="Invalid file type. Only CSV files are allowed.")
+    if file.content_type != 'text/csv':
+        raise HTTPException(status_code=400, detail="Invalid file type. Only CSV files are allowed.")
     contents = file.file.read()
     df = pd.read_csv(io.BytesIO(contents))
     # Strip whitespace from all string values in the DataFrame
