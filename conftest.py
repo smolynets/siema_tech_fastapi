@@ -85,3 +85,15 @@ def create_products(db_session):
             product_crud.create_product(db_session, i+1, f"Test Product {i+1}", i+1, family_name)
         assert db_session.query(Product).count() == count
     return _create_products
+
+
+@pytest.fixture
+def create_sales(db_session):
+    def _create_sales(count, product_id):
+        assert db_session.query(Sale).count() == 0
+        sales = {}
+        for i in range(count):
+            sales[f"2024-{i+1}"] = i+1
+        product_crud.create_sales(db_session, sales, product_id)
+        assert db_session.query(Sale).count() == count
+    return _create_sales

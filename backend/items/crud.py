@@ -2,7 +2,7 @@ import logging
 from sqlalchemy import select
 from backend.config import SERVICE_NAME
 from backend.items.models import Item, Product, Family, Sale
-from backend.items.schemas import ProductCreate, ItemUpdate, FamilyCreate, FamilyUpdate, ProductUpdate
+from backend.items.schemas import ProductCreate, ItemUpdate, FamilyCreate, FamilyUpdate, ProductUpdate, SaleUpdate
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
@@ -59,6 +59,15 @@ class ProductCrud:
                 db.commit()
                 db.refresh(db_sale)
         return True
+
+    def update_sale(self, db: Session, id: int, item: SaleUpdate):
+        db_item = self.get_sale_by_id(db, id)
+        if db_item:
+            db_item.month = item.month
+            db_item.count = item.count
+            db.commit()
+            db.refresh(db_item)
+        return db_item
 
     def create_product(self, db: Session, id: int, name: str, price: int, family_name: str):
         family = self.get_family_by_name(db, family_name)

@@ -82,3 +82,21 @@ class FamilySchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class SaleOutSchema(BaseModel):
+    id: int
+    month: str
+    count: int
+    product_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class SaleUpdate(BaseModel):
+    month: str
+    count: int
+
+    class Config:
+        orm_mode = True

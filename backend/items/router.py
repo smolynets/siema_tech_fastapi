@@ -10,7 +10,9 @@ from backend.items.schemas import (
     FamilyUpdate,
     FamilyOutSchema,
     ProductUpdate,
-    ProductOutSchema
+    ProductOutSchema,
+    SaleOutSchema,
+    SaleUpdate
 )
 from backend.items.models import Item, Product
 from backend.items.crud import ProductCrud
@@ -110,6 +112,29 @@ def get_all_sales(
     limit: int = 10,
 ):
     return product_crud.get_sales(db, skip, limit)
+
+
+@router.get("/sale/{id}")
+def get_sale_by_id(
+    id: int,
+    db: Session = Depends(get_db)
+):  
+    db_item = product_crud.get_sale_by_id(db, id)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Sale not found")
+    return db_item
+
+
+@router.put("/sale/{id}", response_model=SaleOutSchema)
+def update_sale_api(
+    id: int,
+    family: SaleUpdate,
+    db: Session = Depends(get_db)
+):
+    db_item = product_crud.update_sale(db, id, family)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Sale not found")
+    return db_item   
 
 
 @router.put("/family/{id}", response_model=FamilyOutSchema)
