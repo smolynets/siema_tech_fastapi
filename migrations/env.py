@@ -1,7 +1,6 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.declarative import declarative_base
 
 from alembic import context
@@ -16,7 +15,9 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Add your model's MetaData object here
-from backend.models import Base  # Adjust the import according to your project structure
+from backend.models import \
+    Base  # Adjust the import according to your project structure
+
 target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:

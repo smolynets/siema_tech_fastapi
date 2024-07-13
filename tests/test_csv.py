@@ -1,14 +1,13 @@
 import io
-from fastapi.testclient import TestClient
+
 import pytest
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi.testclient import TestClient
 from httpx import AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession
 
-
-from backend.main import app
-from backend.items.models import Product, Family, Sale
 from backend.items.crud import ProductCrud
-
+from backend.items.models import Family, Product, Sale
+from backend.main import app
 
 product_crud = ProductCrud()
 

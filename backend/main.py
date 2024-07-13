@@ -1,14 +1,15 @@
 import datetime
+import logging
+from logging.config import dictConfig
+
 from fastapi import FastAPI, status
-from backend import config
-from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from logging.config import dictConfig
-import logging
-from backend.logger import LogConfig
+from starlette.middleware.cors import CORSMiddleware
 
+from backend import config
 from backend.items.router import router as items_router
+from backend.logger import LogConfig
 
 dictConfig(LogConfig().model_dump())
 

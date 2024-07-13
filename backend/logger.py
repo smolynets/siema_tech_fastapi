@@ -2,6 +2,7 @@ from pydantic import BaseModel
 
 from backend.config import SERVICE_NAME
 
+
 class LogConfig(BaseModel):
     """Logging configuration to be set for the server"""
 

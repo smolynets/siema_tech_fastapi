@@ -1,19 +1,17 @@
 import pytest
+from fastapi.testclient import TestClient
 from httpx import AsyncClient  # Change to AsyncClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from backend.main import app
-from backend.database import Base, get_db, SessionLocal
-from backend import config
-from fastapi.testclient import TestClient
-from backend import config
-from backend.items.models import Product, Family, Sale
-from backend.items.crud import ProductCrud
 
+from backend import config
+from backend.database import Base, SessionLocal, get_db
+from backend.items.crud import ProductCrud
+from backend.items.models import Family, Product, Sale
+from backend.main import app
 
 product_crud = ProductCrud()
 
-# Update the URL to match your Docker Compose setup
 SQLALCHEMY_DATABASE_URL = f"postgresql+psycopg2://{config.TEST_POSTGRES_USER}:{config.TEST_POSTGRES_PASSWORD}@{config.TEST_POSTGRES_HOST}:\
     {config.TEST_POSTGRES_PORT}/{config.TEST_DATABASE}"
 

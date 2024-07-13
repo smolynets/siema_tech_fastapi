@@ -1,25 +1,18 @@
-import logging
-from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
-from backend.database import get_db
-from backend.items.schemas import (
-    ProductCreate,
-    ItemOutSchema,
-    ItemUpdate,
-    ProductSchema,
-    FamilySchema,
-    FamilyUpdate,
-    FamilyOutSchema,
-    ProductUpdate,
-    ProductOutSchema,
-    SaleOutSchema,
-    SaleUpdate
-)
-from backend.items.models import Item, Product
-from backend.items.crud import ProductCrud
-from typing import List
-import pandas as pd
 import io
+import logging
+from typing import List
+
+import pandas as pd
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
+
+from backend.database import get_db
+from backend.items.crud import ProductCrud
+from backend.items.models import Item, Product
+from backend.items.schemas import (FamilyOutSchema, FamilySchema, FamilyUpdate,
+                                   ProductCreate, ProductOutSchema,
+                                   ProductSchema, ProductUpdate, SaleOutSchema,
+                                   SaleUpdate)
 
 router = APIRouter()
 
