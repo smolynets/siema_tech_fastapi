@@ -18,5 +18,12 @@ test_data.csv test file is in the project's root
 ##### Run in project root directory:
 	docker-compose up -d
 
-##### Fow run unit tests:
+##### Fow run all unit tests:
     docker exec -it backend pytest
+
+##### Fow run particular unit tests:
+    docker exec -it backend pytest -k test_name
+
+##### Fow get coverage report run:
+    docker exec -it backend coverage run -m pytest
+    docker exec -it backend coverage report -m
