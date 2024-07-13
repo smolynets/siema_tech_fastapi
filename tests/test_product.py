@@ -1,3 +1,4 @@
+import io
 from fastapi.testclient import TestClient
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -216,3 +217,28 @@ def test_error_delete_sale(test_client, db_session):
     response = test_client.delete("/api/v1/items/delete_sale/1")
     assert response.status_code == 404
     assert response.json()["detail"][0]["msg"] == "Sale not found"
+
+
+def test_upload_csv(test_client, db_session):
+    with open('test_data.csv', 'rb') as f:
+        file = io.BytesIO(f.read())
+    files = {'file': ('test_data.csv', file, 'text/csv')}
+    response = test_client.post("/api/v1/items/upload-csv/", files=files)
+    assert response.status_code == 200
+    assert response.json() == {"message": "Products uploaded successfully"}
+    products = db_session.query(Product).all()
+    assert len(products) == 5
+    
+    sales = db_session.query(Sale).all()
+    assert len(sales) == 20
+
+    families = db_session.query(Family).all()
+    assert len(families) == 3
+
+    product = db_session.query(Product).filter_by(id=1111).first()
+    assert product.name == "Blue Candy"
+    assert product.price == 10.0
+    assert product.family.name == "Candy"
+    sale = db_session.query(Sale).filter_by(product_id=1111).first()
+    assert sale.month == "2024-01"
+    assert sale.count == 23
