@@ -2,7 +2,15 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from backend.database import get_db
 from backend.items.schemas import (
-    ProductCreate, ItemOutSchema, ItemUpdate, ProductSchema, FamilySchema, FamilyUpdate, FamilyOutSchema
+    ProductCreate,
+    ItemOutSchema,
+    ItemUpdate,
+    ProductSchema,
+    FamilySchema,
+    FamilyUpdate,
+    FamilyOutSchema,
+    ProductUpdate,
+    ProductOutSchema
 )
 from backend.items.models import Item, Product
 from backend.items.crud import ProductCrud
@@ -51,6 +59,30 @@ def get_all_products(
 ):
     return product_crud.get_products(db, skip, limit)
 
+
+@router.get("/product/{id}")
+def get_product_by_id(
+    id: int,
+    db: Session = Depends(get_db)
+):  
+    db_item = product_crud.get_product(db, id)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return db_item
+
+
+@router.put("/product/{id}", response_model=ProductOutSchema)
+def update_product_api(
+    id: int,
+    product: ProductUpdate,
+    db: Session = Depends(get_db)
+):
+    db_item = product_crud.update_product(db, id, product)
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return db_item
+
+
 @router.get("/families/")
 def get_all_families(
     db: Session = Depends(get_db),
@@ -68,7 +100,7 @@ def get_family_by_id(
     db_item = product_crud.get_family(db, id)
     if not db_item:
         raise HTTPException(status_code=404, detail="Family not found")
-    return product_crud.get_family(db, id)
+    return db_item
 
 
 @router.get("/sales/")

@@ -72,6 +72,16 @@ def create_families(db_session):
     def _create_families(count):
         assert db_session.query(Family).count() == 0
         for i in range(count):
-            product_crud.create_family(db_session, f"Test Product {i+1}")
+            product_crud.create_family(db_session, f"Test Family {i+1}")
         assert db_session.query(Family).count() == count
     return _create_families
+
+
+@pytest.fixture
+def create_products(db_session):
+    def _create_products(count, family_name):
+        assert db_session.query(Product).count() == 0
+        for i in range(count):
+            product_crud.create_product(db_session, i+1, f"Test Product {i+1}", i+1, family_name)
+        assert db_session.query(Product).count() == count
+    return _create_products

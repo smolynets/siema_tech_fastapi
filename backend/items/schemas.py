@@ -12,6 +12,24 @@ class ProductCreate(BaseModel):
         orm_mode = True
 
 
+class ProductUpdate(BaseModel):
+    id: int
+    name: str
+    price: int
+
+    class Config:
+        orm_mode = True
+
+
+class ProductOutSchema(BaseModel):
+    id: int
+    name: str
+    price: int
+    family_id: int
+
+    class Config:
+        orm_mode = True
+
 class FamilyCreate(BaseModel):
     name: str
 
