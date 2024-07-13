@@ -19,6 +19,8 @@ test_data.csv test file is in the project's root
 	docker-compose up -d
 
 ##### Fow run unit tests:
-docker exec -it backend pytest - run all tests
-of
-docker exec -it backend pytest -k name_of_test - run particular test
+docker exec -it backend pytest
+
+or
+
+docker exec -it backend pytest -k name_of_test
