@@ -1,9 +1,7 @@
 from backend.database import Base
 from datetime import datetime as dt
-
 from sqlalchemy import Column, Integer, DateTime, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
-
 
 class Item(Base):
     __tablename__ = "items"
@@ -17,7 +15,7 @@ class Item(Base):
 class Product(Base):
     __tablename__ = "products"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=False)
+    id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     price = Column(Float, nullable=False)
     family_id = Column(Integer, ForeignKey("families.id"), nullable=False)
