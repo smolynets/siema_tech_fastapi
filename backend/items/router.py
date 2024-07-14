@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from backend.database import get_db
 from backend.items.crud import ProductCrud
-from backend.items.models import Item, Product
+from backend.items.models import Product
 from backend.items.schemas import (FamilyOutSchema, FamilySchema, FamilyUpdate,
                                    ProductCreate, ProductOutSchema,
                                    ProductSchema, ProductUpdate, SaleOutSchema,

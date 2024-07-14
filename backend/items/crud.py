@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.config import SERVICE_NAME
-from backend.items.models import Family, Item, Product, Sale
+from backend.items.models import Family, Product, Sale
 from backend.items.schemas import (FamilyCreate, FamilyUpdate,
                                    ProductCreate, ProductUpdate, SaleUpdate)
 
